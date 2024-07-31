@@ -1,10 +1,11 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 
 import * as middlewares from "./middlewares";
 import MessageResponse from "./interfaces/MessageResponse";
+import userRouter from "./api/user/user.router";
 
 require("dotenv").config();
 
@@ -20,6 +21,13 @@ app.get<{}, MessageResponse>("/", (req, res) => {
     message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
   });
 });
+
+app.use("/api/v1/user", userRouter);
+// app.post("/api/v1/user", (req: Request, res: Response) => {
+//   res.send({
+//     message: "User created sucessfully",
+//   });
+// });
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
