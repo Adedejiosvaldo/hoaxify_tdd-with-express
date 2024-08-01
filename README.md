@@ -4,9 +4,9 @@ This project is a demonstration of implementing test-driven development (TDD) in
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
-2. Navigate to the project directory: `cd your-repo`
-3. Install the dependencies: `npm install`
+1. Clone the repository: `git clone https://github.com/Adedejiosvaldo/hoaxify_tdd-with-express`
+2. Navigate to the project directory: `cd hoaxify_tdd-with-express`
+3. Install the dependencies: `pnpm install`
 
 ## Usage
 
