@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma";
 import { createUserDTO } from "./user.validator";
-
-const CreateUserController = async (req: Request, res: Response) => {
+import bcrypt from "bcrypt";
+const CreateUserController = (req: Request, res: Response) => {
   try {
     const data: createUserDTO = req.body;
 
@@ -21,17 +21,20 @@ const CreateUserController = async (req: Request, res: Response) => {
     //   });
     // }
 
-    prisma.user
-      .create({
-        data: {
-          username: data.username,
-          email: data.email,
-          password: data.password,
-        },
-      })
-      .then((user) => {
-        res.send({ message: "User created sucessfully" });
-      });
+    bcrypt.hash(data.password, 10).then((hashedPassword) => {
+      prisma.user
+        .create({
+          data: {
+            username: data.username,
+            email: data.email,
+            password: hashedPassword,
+          },
+        })
+        .then((user) => {
+          res.send({ message: "User created sucessfully" });
+        });
+    });
+
     // res.send({ message: "User created sucessfully" });
   } catch (error) {}
 };

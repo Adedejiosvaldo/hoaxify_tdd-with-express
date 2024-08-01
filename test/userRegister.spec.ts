@@ -11,6 +11,14 @@ beforeEach(async () => {
 });
 
 describe("User Registration", () => {
+  const postValidator = () => {
+    request(app).post("/api/v1/user/signup").send({
+      username: "user1",
+      email: "emai",
+      password: "password",
+    });
+  };
+
   it("returns 200 ok when the signup request is valid ", (done) => {
     request(app)
       .post("/api/v1/user/signup")
@@ -67,7 +75,24 @@ describe("User Registration", () => {
         prisma.user.findMany().then((userList) => {
           const user = userList[0];
           expect(user.username).toBe("ade");
-          expect(user.password).toBe("password");
+          expect(user.password).not.toBe("password");
+          done();
+        });
+      });
+  });
+
+  it("Hashes the password before saving to database", (done) => {
+    request(app)
+      .post("/api/v1/user/signup")
+      .send({
+        username: "ade",
+        email: "adedejiosvaldo@gail.com",
+        password: "password",
+      })
+      .then((response) => {
+        prisma.user.findMany().then((userList) => {
+          const user = userList[0];
+          expect(user.password).not.toBe("password");
           done();
         });
       });
